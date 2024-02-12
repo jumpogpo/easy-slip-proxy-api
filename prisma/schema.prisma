@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type TransactionsData {
+  amount      TransactionsDataAmount
+  countryCode String
+  date        String
+  fee         Int
+  payload     String
+  receiver    TransactionsDataReceiver
+  ref1        String
+  ref2        String
+  ref3        String
+  sender      TransactionsDataSender
+  transRef    String
+}
+
+type TransactionsDataAmount {
+  amount Int
+  local  TransactionsDataAmountLocal
+}
+
+type TransactionsDataAmountLocal {
+  amount   Int
+  currency String
+}
+
+type TransactionsDataReceiver {
+  account TransactionsDataReceiverAccount
+  bank    TransactionsDataReceiverBank
+}
+
+type TransactionsDataReceiverAccount {
+  name  TransactionsDataReceiverAccountName
+  proxy TransactionsDataReceiverAccountProxy?
+}
+
+type TransactionsDataReceiverAccountName {
+  en String
+  th String
+}
+
+type TransactionsDataReceiverAccountProxy {
+  account String
+  type    String
+}
+
+type TransactionsDataReceiverBank {
+  id String
+}
+
+type TransactionsDataSender {
+  account TransactionsDataSenderAccount
+  bank    TransactionsDataSenderBank
+}
+
+type TransactionsDataSenderAccount {
+  bank TransactionsDataSenderAccountBank
+  name TransactionsDataSenderAccountName
+}
+
+type TransactionsDataSenderAccountBank {
+  account String
+  type    String
+}
+
+type TransactionsDataSenderAccountName {
+  en String
+  th String
+}
+
+type TransactionsDataSenderBank {
+  id    String
+  name  String
+  short String
+}
+
+model Transactions {
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
+  status        Int
+  transactionId String
+  message       String?
+  data          TransactionsData?
+}
