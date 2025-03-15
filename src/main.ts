@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SwaggerTheme } from 'swagger-themes';
+import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,9 +22,9 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  const theme = new SwaggerTheme('v3');
+  const theme = new SwaggerTheme();
   SwaggerModule.setup(pathSwagger, app, document, {
-    customCss: theme.getBuffer('dark'),
+    customCss: theme.getBuffer(SwaggerThemeNameEnum.DARK),
   });
 
   await app.listen(port);
